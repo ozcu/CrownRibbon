@@ -6,7 +6,7 @@ const simplex = new SimplexNoise('seed');
 const sketch = p5 => {
 
   //variables
-  const numFrames = 100;
+  const numFrames = 200;
 
 
   const TWO_PI = 6.28318530717958647693;
@@ -16,15 +16,15 @@ const sketch = p5 => {
   //number of small points between big points
   const m = 500;
   //number of big points
-  const n = 20;
+  const n = 10;
     
   // Variables scoped within p5
   const canvasWidth = p5.windowWidth;
   const canvasHeight = p5.windowHeight;
   
   //center of point pattern
-  const ax = 600  
-  const ay = 500
+  const ax = canvasWidth/2  
+  const ay = canvasHeight-50
 
   // make library globally available
   window.p5 = p5;
@@ -44,8 +44,8 @@ class Point{
    cx = p5.random(0.1*canvasWidth,0.9*canvasWidth);
    cy = p5.random(0.1*canvasHeight,0.5*canvasHeight);
 
-   mov = 30;
-   rad = 1.2;
+   mov = 50;
+   rad = 0.7;
 
   //time and phase
    x(t,ph){
@@ -76,8 +76,9 @@ class Point{
     for(var i=0;i<=m;i++){
       const tt = 1.0*i/m;
       
-      const xx = p5.lerp(this.x(t,(t-this.delayFactor*tt)),ax,tt);
-      const yy = p5.lerp(this.y(t,(t-this.delayFactor*tt)),ay,tt);
+
+      const xx = p5.lerp(this.x(t,-this.delayFactor*tt),ax,tt);
+      const yy = p5.lerp(this.y(t,-this.delayFactor*tt),ay,tt);
       
       p5.point(xx,yy);
     }
