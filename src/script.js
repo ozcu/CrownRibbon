@@ -6,7 +6,7 @@ const simplex = new SimplexNoise('seed');
 const sketch = p5 => {
 
   //variables
-  const numFrames = 1000;
+  const numFrames = 100;
 
 
   const TWO_PI = 6.28318530717958647693;
@@ -37,39 +37,33 @@ class Point{
     this.t=t;
   }
 
-
-
-
-
-  
-
-  show(t){
-
-  const delayFactor = 1.6;
-  let seed = p5.random(100);
+   delayFactor = 1.6;
+   seed = p5.random(100);
 
   //center of the random points
-  let cx = p5.random(0.1*canvasWidth,0.9*canvasWidth);
-  let cy = p5.random(0.1*canvasHeight,0.5*canvasHeight);
+   cx = p5.random(0.1*canvasWidth,0.9*canvasWidth);
+   cy = p5.random(0.1*canvasHeight,0.5*canvasHeight);
 
-  let mov = 30;
-  let rad = 1.2;
+   mov = 30;
+   rad = 1.2;
 
   //time and phase
-  function x(t,ph){
+   x(t,ph){
 
-    return cx + mov*simplex.noise2D(seed+rad*p5.cos(TWO_PI*(t+ph)),rad*p5.sin(TWO_PI*(t+ph)));
+    return this.cx + this.mov*simplex.noise2D(this.seed+this.rad*p5.cos(TWO_PI*(t+ph)),this.rad*p5.sin(TWO_PI*(t+ph)));
   }
   
-  function y(t,ph)  {
+   y(t,ph)  {
     
-    return cy + mov*simplex.noise2D(100+seed+rad*p5.cos(TWO_PI*(t+ph)),rad*p5.sin(TWO_PI*(t+ph)));
+    return this.cy + this.mov*simplex.noise2D(this.seed+this.rad*p5.cos(TWO_PI*(t+ph)),this.rad*p5.sin(TWO_PI*(t+ph)));
   }
+  show(t){
+
   
   let px,py
   
-    px = x(t,0);
-    py = y(t,0);
+    px = this.x(t,0);
+    py = this.y(t,0);
     
 
     p5.stroke(255);
@@ -82,8 +76,8 @@ class Point{
     for(var i=0;i<=m;i++){
       const tt = 1.0*i/m;
       
-      const xx = p5.lerp(x(t,(t-delayFactor*tt)),ax,tt);
-      const yy = p5.lerp(y(t,(t-delayFactor*tt)),ay,tt);
+      const xx = p5.lerp(this.x(t,(t-this.delayFactor*tt)),ax,tt);
+      const yy = p5.lerp(this.y(t,(t-this.delayFactor*tt)),ay,tt);
       
       p5.point(xx,yy);
     }
