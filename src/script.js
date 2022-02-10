@@ -6,9 +6,10 @@ const simplex = new SimplexNoise('seed');
 const sketch = p5 => {
 
   //variables
-  const numFrames = 200;
+  let numFrames = 200;
 
-  console.log()
+  let mov = 50;
+  let rad = 0.8;
 
   const TWO_PI = 6.28318530717958647693;
 
@@ -45,18 +46,17 @@ class Point{
    cx = p5.random(0.1*canvasWidth,0.9*canvasWidth);
    cy = p5.random(0.1*canvasHeight,0.5*canvasHeight);
 
-   mov = 50;
-   rad = 0.8;
+   
   
   //time and phase
    x(t,ph){
 
-    return this.cx + this.mov*simplex.noise2D(this.seed+this.rad*p5.cos(TWO_PI*(t+ph+50)),this.rad*p5.sin(TWO_PI*(t+ph)));
+    return this.cx + mov*simplex.noise2D(this.seed+rad*p5.cos(TWO_PI*(t+ph+50)),rad*p5.sin(TWO_PI*(t+ph)));
   }
   
    y(t,ph)  {
     
-    return this.cy + this.mov*simplex.noise2D((this.seed*1.2)+this.rad*p5.cos(TWO_PI*(t+ph)),this.rad*p5.sin(TWO_PI*(t+ph)));
+    return this.cy + mov*simplex.noise2D((this.seed*1.2)+rad*p5.cos(TWO_PI*(t+ph)),rad*p5.sin(TWO_PI*(t+ph)));
   }
   show(t){
 
@@ -87,15 +87,25 @@ class Point{
   
 }
 
-let slider
+let sliderPoints,sliderTime,sliderMov
   // Setup function
 
   p5.setup = () => {
     p5.createCanvas(canvasWidth, canvasHeight);
 
-    slider = p5.createSlider(1, 50, 1);
-    slider.position(10, 10);
-    slider.style('width', '80px');
+    sliderPoints = p5.createSlider(1, 50, 1);
+    sliderPoints.position(10, 10);
+    sliderPoints.style('width', '80px');
+
+    sliderTime = p5.createSlider(10,200,10);
+    sliderTime.position(10,30);
+    sliderTime.style('width','80px');
+
+    sliderMov = p5.createSlider(10,300,5);
+    sliderMov.position(10,50);
+    sliderMov.style('width','80px');
+
+
 
       for(var i=0;i<n;i++){
         pointContainer[i] = new Point();
@@ -108,8 +118,10 @@ let slider
   let t=0;
   p5.draw = () => {
     p5.background(0);
-    console.log(n)
-    n = slider.value();
+
+    n = sliderPoints.value();
+    numFrames = sliderTime.value();
+    mov = sliderMov.value();
 
 
     //render over time
